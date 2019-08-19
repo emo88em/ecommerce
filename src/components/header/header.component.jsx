@@ -2,6 +2,7 @@ import React from 'react';
 import {Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase.utils';
 import {ReactComponent as Logo} from '../../assets/crown.svg'
+import Searchbar from '../searchfield/searchfield.component';
 import './header.styles.scss';
 
 const Header = ({ currentUser }) => {
@@ -25,6 +26,9 @@ const Header = ({ currentUser }) => {
                         Sign In
                     </Link>
                     )}
+                    <div className="option">
+                <Searchbar />
+            </div>
             </div>
         </div>
     )
