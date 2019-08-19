@@ -1,8 +1,11 @@
 import React from 'react';
 import {Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase.utils';
+import { connect } from 'react-redux';
 import {ReactComponent as Logo} from '../../assets/crown.svg'
 import Searchbar from '../searchfield/searchfield.component';
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropDown from '../cart-dropdown/cart-dropdown.component';
 import './header.styles.scss';
 
 const Header = ({ currentUser }) => {
@@ -26,12 +29,15 @@ const Header = ({ currentUser }) => {
                         Sign In
                     </Link>
                     )}
-                    <div className="option">
-                <Searchbar />
+                    <CartIcon/>
             </div>
-            </div>
+            <CartDropDown />
         </div>
     )
 }
 
-export default Header;
+const mapStateToProps = state => ({
+    currentUser: state.user.currentUser
+})
+
+export default connect(mapStateToProps)(Header);

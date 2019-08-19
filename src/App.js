@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import { connect } from 'react-redux';
 import { setCurrentUser } from '../src/redux/user/user.actions';
@@ -10,7 +10,6 @@ import SignInandSignUp from './pages/sign-in-sign-up-page/sign-in-sign-up.compon
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends React.Component {
-
 	unsubscribeFromAuth = null;
 
 	componentDidMount() {
@@ -28,12 +27,10 @@ class App extends React.Component {
 						}
 					});
 				});
-			}
-			else {
+			} else {
 				setCurrentUser(userAuth);
 			}
 		});
-		
 	}
 
 	componentWillUnmount() {
@@ -43,19 +40,27 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Header  />
+				<Header />
 				<Switch>
 					<Route path="/" exact component={HomePage} />
 					<Route path="/shop" component={ShopPage} />
-					<Route path="/signin" component={SignInandSignUp} />
+					<Route
+						path="/signin"
+						exact
+						render={() => (this.props.currentUser ? <Redirect to="/" /> : <SignInandSignUp />)}
+					/>
 				</Switch>
 			</div>
 		);
 	}
 }
 
+const mapStateToProps = ({ user }) => ({
+	currentUser: user.currentUser
+});
+
 const mapDispatchToProps = dispatch => ({
 	setCurrentUser: user => dispatch(setCurrentUser(user))
-})
+});
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
